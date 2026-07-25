@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trajeto — Plataforma de Estudos</title>
+  <meta name="description" content="Acompanhamento de estudos de Engenharia de Dados: roadmap, tempo, lembretes, livros e compartilhamento.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0d10'/%3E%3Cpath d='M8 22 L14 12 L18 17 L24 8' stroke='%23b8f13c' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===== Barra superior ===== -->
+    <header class="topbar">
+      <div class="brand" data-act="go-dashboard" title="Ir para o Dashboard">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="var(--bg2)"/>
+          <path d="M8 22 L14 12 L18 17 L24 8" stroke="var(--accent)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-text">
+          <strong>Trajeto</strong>
+          <span>Engenharia de Dados</span>
+        </div>
+      </div>
+
+      <!-- Pílula do cronômetro em andamento (visível em qualquer aba) -->
+      <button id="timer-pill" class="timer-pill" data-act="timer-pill" hidden aria-label="Cronômetro em andamento">
+        <span class="timer-pill-dot" aria-hidden="true"></span>
+        <span id="timer-pill-label"></span>
+        <strong id="timer-pill-time">0:00</strong>
+      </button>
+
+      <nav class="tabs" role="tablist" aria-label="Navegação principal">
+        <button class="tab is-active" role="tab" aria-selected="true" data-act="tab" data-tab="dashboard">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm10 7h6V11h-6v9ZM4 20h6v-5H4v5Zm10-9h6V4h-6v7Z"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-act="tab" data-tab="roadmap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h7v3H4V5Zm0 5.5h11v3H4v-3ZM4 16h16v3H4v-3Z"/></svg>
+          <span>Roadmap</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-act="tab" data-tab="reminders">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2Zm13 8H6v10h14V10Zm-9 3h2v2h-2v-2Zm4 0h2v2h-2v-2Zm-8 0h2v2H7v-2Z"/></svg>
+          <span>Lembretes</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-act="tab" data-tab="books">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h13a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 2v12h13V5H5Zm2 14v2h11a2 2 0 0 0 2-2H7Zm2-12h7v2H9V7Zm0 4h7v2H9v-2Z"/></svg>
+          <span>Livros</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-act="tab" data-tab="share">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.83-4H15a3 3 0 0 0 .06 1.19L8.5 8.6a3 3 0 1 0 0 6.8l6.56 3.41A3 3 0 1 0 18 16c-.6 0-1.15.17-1.62.47L9.9 13.1a3 3 0 0 0 0-2.2l6.48-3.37c.47.3 1.02.47 1.62.47Z"/></svg>
+          <span>Compartilhar</span>
+        </button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" data-act="export" title="Exportar backup (.json)" aria-label="Exportar backup">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.6l3.3-3.3 1.4 1.4-5.7 5.7-5.7-5.7 1.4-1.4L10 13.6V3h2ZM5 19h14v2H5v-2Z"/></svg>
+        </button>
+        <button class="icon-btn" data-act="import" title="Importar backup (.json)" aria-label="Importar backup">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.4V6.8l-3.3 3.3-1.4-1.4L13 3l5.7 5.7-1.4 1.4L14 6.8v10.6h-2ZM5 19h14v2H5v-2Z" transform="translate(-1 0)"/></svg>
+        </button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+      </div>
+    </header>
+
+    <!-- ===== Painéis das abas (conteúdo renderizado pelo app.js) ===== -->
+    <main class="main">
+      <section id="tab-dashboard" class="tab-panel" role="tabpanel" aria-label="Dashboard"></section>
+      <section id="tab-roadmap"   class="tab-panel" role="tabpanel" aria-label="Roadmap" hidden></section>
+      <section id="tab-reminders" class="tab-panel" role="tabpanel" aria-label="Lembretes" hidden></section>
+      <section id="tab-books"     class="tab-panel" role="tabpanel" aria-label="Livros" hidden></section>
+      <section id="tab-share"     class="tab-panel" role="tabpanel" aria-label="Compartilhar" hidden></section>
+    </main>
+  </div>
+
+  <!-- ===== Modal genérico ===== -->
+  <div id="modal-root" class="modal-root" hidden>
+    <div class="modal-backdrop" data-act="modal-close"></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head">
+        <h2 id="modal-title"></h2>
+        <button class="icon-btn" data-act="modal-close" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6 10.6 12 5 6.4 6.4 5Z"/></svg>
+        </button>
+      </div>
+      <form id="modal-form" class="modal-body"></form>
+    </div>
+  </div>
+
+  <!-- ===== Toasts e tooltip ===== -->
+  <div id="toast-root" class="toast-root" aria-live="polite"></div>
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
