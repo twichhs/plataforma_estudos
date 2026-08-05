@@ -1,4 +1,20 @@
-# Trajeto — Plataforma de Estudos (Engenharia de Dados)
+# Plataforma de Estudos Web
+
+<p align="center">
+  <img src="tela_principal.png" width="700">
+</p>
+
+<p align="center">
+  <img src="tela_livros.png" width="700">
+</p>
+
+<p align="center">
+  <img src="tela_post.png" width="700">
+</p>
+
+<p align="center">
+  <img src="temas.png" width="500">
+</p>
 
 Aplicação web completa de acompanhamento de estudos, estilo Notion + Trello:
 roadmap em três níveis (Fases → Temas → Tarefas), cronômetro de estudo,
